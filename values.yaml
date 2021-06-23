@@ -1,0 +1,14 @@
+replicaCount: 1
+
+image:
+  repository: docker.io/nginx
+  tag: '1.20'
+  pullPolicy: IfNotPresent
+
+resources: {}
+
+fullnameOverride: ''
+
+favorite:
+  drink: bear
+  food: tomat

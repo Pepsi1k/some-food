@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "common.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "common.labels" . | indent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+{{ include "common.instance-name" . | indent 6 }}
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+{{ include "common.instance-name" . | indent 8 }}
+    spec:
+      containers:
+        - image: {{ template "common.image" . }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          name: {{ template "common.fullname" . }}
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+          ports:
+            - containerPort: 80
+
