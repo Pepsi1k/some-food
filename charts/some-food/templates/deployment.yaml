@@ -27,5 +27,5 @@ spec:
           resources:
 {{ toYaml .Values.resources | indent 12 }}
           ports:
-            - containerPort: 80
+            - containerPort: {{ default 80 .Values.port }}
 

@@ -1,14 +1,36 @@
-replicaCount: 1
+kubeVersionOverride: ''
 
-image:
-  repository: docker.io/nginx
-  tag: '1.20'
-  pullPolicy: IfNotPresent
+bigTasty:
+  someFood:
+    fullnameOverride: &someFoodFullnameOverride some-food
+    port: &someFoodPort 80
+    ingress:
+      enabled: true
+      name: 'big-tasty.example.com'
+      namespace: 'ingress' # by default will be used Release.Namespace
+      annotaions:
+        kubernetes.io/ingress.class: nginx
+        nginx.ingress.kubernetes.io/enable-modsecurity: 'true'
+        nginx.ingress.kubernetes.io/enable-owasp-core-rules: 'true'
+      tls:
+        - hosts:
+            - 'big-tasty.example.com'
+          secretName: star.example.com-tls
+      rules:
+        - host: big-tasty.example.com
+          http:
+            paths:
+              - backend:
+                  serviceName: *someFoodFullnameOverride
+                  servicePort: *someFoodPort
 
-resources: {}
+some-food:
+  replicaCount: 1
+  port: *someFoodPort
+  image:
+    repository: docker.io/nginx
+    tag: '1.20'
+    pullPolicy: IfNotPresent
 
-fullnameOverride: ''
-
-favorite:
-  drink: bear
-  food: tomat
+  resources: {}
+  fullnameOverride: *someFoodFullnameOverride

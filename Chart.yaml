@@ -1,6 +1,8 @@
 apiVersion: v2
-name: some-food
-description: Some experimental helm chart
+name: big-tasty
+description: extend chart from food-ship
 type: application
 version: 0.1.0
-appVersion: "1.16.0"
+dependencies:
+  - name: "some-food"
+    version: "0.1.0"

@@ -1,50 +1,29 @@
+
+
 {{/*
-Create chart name and version as used by the chart label.
+Return the target Kubernetes version
 */}}
-{{- define "common.chart" -}}
-{{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
+{{- define "some-food.kubeVersion" -}}
+  {{- default .Capabilities.KubeVersion.Version .Values.kubeVersionOverride }}
 {{- end -}}
 
-
 {{/*
-Expand the name of the chart.
+Return the appropriate apiVersion for ingress
 */}}
-{{- define "common.fullname" -}}
-{{- if .Values.fullnameOverride -}}
-{{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" -}}
+{{- define "some-food.ingress.apiVersion" -}}
+{{- if semverCompare "<1.14-0" (include "some-food.kubeVersion" $) -}}
+{{- print "extensions/v1beta1" -}}
+{{- else if semverCompare "<1.19-0" (include "some-food.kubeVersion" $) -}}
+{{- print "networking.k8s.io/v1beta1" -}}
 {{- else -}}
-{{- $name := default .Chart.Name .Values.nameOverride -}}
-{{- if contains $name .Release.Name -}}
-{{- .Release.Name | trunc 63 | trimSuffix "-" -}}
-{{- else -}}
-{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
+{{- print "networking.k8s.io/v1" -}}
 {{- end -}}
 {{- end -}}
-{{- end -}}
-
 
 {{/*
-Return full image url
+Return fqdn of some-food ClusterIP
 */}}
-{{- define "common.image" -}}
-{{- printf "%s:%s" .Values.image.repository .Values.image.tag -}}
-{{- end -}}
-
-
-{{/*
-Return instance and name labels.
-*/}}
-{{- define "common.instance-name" -}}
-app.kubernetes.io/instance: {{ .Release.Name | quote }}
-app.kubernetes.io/name: {{ include "common.fullname" . | quote }}
-{{- end -}}
-
-
-{{/*
-Return labels, including instance and name.
-*/}}
-{{- define "common.labels" -}}
-{{ include "common.instance-name" . }}
-app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
-helm.sh/chart: {{ include "common.chart" . | quote }}
+{{- define "some-food.svc.fullname" -}}
+{{- $svcName := required "Field bigTasty.someFood.fullnameOverride must be set" .Values.bigTasty.someFood.fullnameOverride -}}
+{{- printf "%s.%s.svc.cluster.local" $svcName .Release.Namespace -}}
 {{- end -}}

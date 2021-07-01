@@ -1,0 +1,27 @@
+{{- if .Values.bigTasty.someFood.ingress.enabled -}}
+apiVersion: {{ template "some-food.ingress.apiVersion" . }}
+kind: Ingress
+metadata:
+  name: {{ .Values.bigTasty.someFood.ingress.name }}
+  namespace: {{ default .Release.Namespace .Values.bigTasty.someFood.ingress.namespace }}
+{{- if .Values.bigTasty.someFood.ingress.annotaions }}
+  annotations:
+{{ toYaml .Values.bigTasty.someFood.ingress.annotaions | indent 4 }}
+{{- end}}
+spec:
+  tls:
+{{ toYaml .Values.bigTasty.someFood.ingress.tls | indent 4 }}
+  rules:
+{{ toYaml .Values.bigTasty.someFood.ingress.rules | indent 4 }}
+{{- if and .Values.bigTasty.someFood.ingress.namespace (ne .Values.bigTasty.someFood.ingress.namespace .Release.Namespace) }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.bigTasty.someFood.fullnameOverride }}
+  namespace: {{ .Values.bigTasty.someFood.ingress.namespace }}
+spec:
+  type: ExternalName
+  externalName: {{ template "some-food.svc.fullname" . }}
+{{- end -}}
+{{- end -}}
