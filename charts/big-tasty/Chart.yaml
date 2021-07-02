@@ -6,3 +6,4 @@ version: 0.1.0
 dependencies:
   - name: "some-food"
     version: "0.1.0"
+    repository: https://raw.githubusercontent.com/Pepsi1k/some-food/master
