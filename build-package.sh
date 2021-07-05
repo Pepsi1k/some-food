@@ -18,4 +18,6 @@ if [ -z $chartPath ]; then
   exit 
 fi
 
+helm package "$CHARTS/*" -d "$PACKAGES/*"
 
+helm repo index --url $REPOSITORY_URL --merge index.yaml .
