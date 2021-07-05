@@ -27,7 +27,11 @@ Expand the name of the chart.
 Return full image url
 */}}
 {{- define "common.image" -}}
+{{- if .Values.image.tag -}}
 {{- printf "%s:%s" .Values.image.repository .Values.image.tag -}}
+{{- else -}}
+{{- printf "%s" .Values.image.repository -}}
+{{- end -}}
 {{- end -}}
 
 

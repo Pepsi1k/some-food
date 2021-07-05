@@ -19,4 +19,3 @@ if [ -z $chartPath ]; then
 fi
 
 
-helm repo index --url 

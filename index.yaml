@@ -3,7 +3,7 @@ entries:
   some-food:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2021-07-02T18:38:51.496507535+03:00"
+    created: "2021-07-02T18:42:46.169816403+03:00"
     description: Some experimental helm chart
     digest: 7d803e1ffb1bca5b78fd21b972677b5d07c97590427d0eeef1aa3149dc5f019c
     name: some-food
@@ -11,4 +11,4 @@ entries:
     urls:
     - https://raw.githubusercontent.com/Pepsi1k/some-food/master/packages/some-food-0.1.0.tgz
     version: 0.1.0
-generated: "2021-07-02T18:38:51.496101821+03:00"
+generated: "2021-07-02T18:42:46.169141944+03:00"
